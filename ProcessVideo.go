@@ -18,7 +18,7 @@ func ProcessVideos(dir, pattern string) {
 	files = util.GetFileInfo(util.GetMultiFiles(dir, pattern))
 	for _, file := range files {
 		if file.Size < 200*MB {
-			convert.Convert2AV1()
+			convert.Convert2AV1(file, threads)
 		} else {
 			convert.Convert2H265(file, threads)
 		}
