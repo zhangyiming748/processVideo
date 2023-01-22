@@ -1,15 +1,20 @@
 package convert
 
 import (
+	"github.com.zhangyiming748/processVideo/util"
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/replace"
 	"os"
 	"os/exec"
+	"strings"
 )
 
-func Convert2H265(in, out, threads string) {
-
-	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in, "-c:v", "libx265", "-threads", threads, out)
+func Convert2H265(in util.File, threads string) {
+	prefix := strings.Trim(in.FullPath, in.FullName)
+	middle := "h265"
+	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)
+	out := strings.Join([]string{prefix, middle, "/", in.FullName}, "")
+	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-threads", threads, out)
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
@@ -35,9 +40,9 @@ func Convert2H265(in, out, threads string) {
 		log.Debug.Panicf("命令执行中有错误产生:%v\n", err)
 	}
 	//log.Debug.Printf("完成当前文件的处理:源文件是%s\t目标文件是%s\n", in, file)
-	if err := os.RemoveAll(in); err != nil {
+	if err := os.RemoveAll(in.FullPath); err != nil {
 		log.Debug.Printf("删除源文件失败:%v\n", err)
 	} else {
-		log.Debug.Printf("删除源文件:%s\n", in)
+		log.Debug.Printf("删除源文件:%v\n", in.FullName)
 	}
 }

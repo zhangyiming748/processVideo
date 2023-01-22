@@ -1,8 +1,26 @@
 package processVideo
 
-import "github.com.zhangyiming748/processVideo/util"
+import (
+	"github.com.zhangyiming748/processVideo/convert"
+	"github.com.zhangyiming748/processVideo/util"
+	"runtime"
+	"strconv"
+)
 
-func ProcessVideos(dir, pattern, threads string) {
+const (
+	MB = 1048576
+)
 
-	util.GetFileInfo(util.GetMultiFiles("/Users/zen/Github/processVideo", "go;log"))
+func ProcessVideos(dir, pattern string) {
+	thread := runtime.NumCPU() / 2
+	threads := strconv.Itoa(thread)
+	var files []util.File
+	files = util.GetFileInfo(util.GetMultiFiles(dir, pattern))
+	for _, file := range files {
+		if file.Size < 200*MB {
+			convert.Convert2AV1()
+		} else {
+			convert.Convert2H265(file, threads)
+		}
+	}
 }
