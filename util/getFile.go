@@ -8,10 +8,10 @@ import (
 )
 
 type File struct {
-	FullPath string
-	Size     int64
-	FullName string
-	ExtName  string
+	FullPath string // 文件的绝对路径
+	Size     int64  // 文件大小
+	FullName string // 文件名
+	ExtName  string // 扩展名
 }
 
 /*
@@ -31,7 +31,7 @@ func GetMultiFiles(dir, pattern string) []File {
 				continue
 			}
 			ext := path.Ext(file.Name())
-			log.Info.Printf("extname is %v\n", ext)
+			//log.Info.Printf("extname is %v\n", ext)
 			for _, ex := range exts {
 				if strings.Contains(ext, ex) {
 					//aim = append(aim, file.Name())
@@ -52,7 +52,7 @@ func GetMultiFiles(dir, pattern string) []File {
 				continue
 			}
 			ext := path.Ext(file.Name())
-			log.Info.Printf("extname is %v\n", ext)
+			//log.Info.Printf("extname is %v\n", ext)
 			if strings.Contains(ext, pattern) {
 				//aim = append(aim, file.Name())
 				f := &File{
