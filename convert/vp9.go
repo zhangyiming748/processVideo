@@ -1,8 +1,8 @@
 package convert
 
 import (
-	"github.com.zhangyiming748/processVideo/util"
 	"github.com/zhangyiming748/log"
+	"github.com/zhangyiming748/processVideo/util"
 	"github.com/zhangyiming748/replace"
 	"os"
 	"os/exec"

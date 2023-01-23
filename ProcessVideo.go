@@ -2,9 +2,9 @@ package processVideo
 
 import (
 	"fmt"
-	"github.com.zhangyiming748/processVideo/convert"
-	"github.com.zhangyiming748/processVideo/util"
 	"github.com/zhangyiming748/log"
+	"github.com/zhangyiming748/processVideo/convert"
+	"github.com/zhangyiming748/processVideo/util"
 	"runtime"
 	"strconv"
 	"time"
