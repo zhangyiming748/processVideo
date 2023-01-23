@@ -9,12 +9,19 @@ import (
 	"strings"
 )
 
+// todo ffmpeg -i input.mp4 -c:v libvpx-vp9 -b:v 2M -pass 1 -an -f null /dev/null && ffmpeg -i input.mp4 -c:v libvpx-vp9 -b:v 2M -pass 2 -c:a libopus output.webm
 func Convert2VP9(in util.File, threads string) {
 	prefix := strings.Trim(in.FullPath, in.FullName)
 	middle := "vp9"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)
 	out := strings.Join([]string{prefix, middle, "/", in.FullName}, "")
-	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-crf", "30", "-threads", threads, out)
+	mkv := strings.Join([]string{strings.Trim(out, in.ExtName), "mkv"}, ".")
+	bash1 := strings.Join([]string{"ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libvpx-vp9", "-b:v", "2M", "-pass", "1", "-an", "-f", "null", "/dev/null"}, " ")
+	bash2 := strings.Join([]string{"ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libvpx-vp9", "-b:v", "2M", "-pass", "2", "-c:a", "libopus", "-threads", threads, mkv}, " ")
+	bash := strings.Join([]string{bash1, bash2}, " && ")
+	cmd := exec.Command("bash", "-c", bash)
+
+	//cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-crf", "30", "-threads", threads, out)
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout

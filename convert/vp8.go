@@ -14,7 +14,9 @@ func Convert2VP8(in util.File, threads string) {
 	middle := "vp8"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)
 	out := strings.Join([]string{prefix, middle, "/", in.FullName}, "")
-	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-crf", "30", "-threads", threads, out)
+	mkv := strings.Join([]string{strings.Trim(out, in.ExtName), "mkv"}, ".")
+	//ffmpeg -i input.mp4 -c:v libvpx -b:v 1M -c:a libvorbis output.webm
+	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libvpx", "-b:v", "2M", "-c:a", "libvorbis", "-threads", threads, mkv)
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout

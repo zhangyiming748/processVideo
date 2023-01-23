@@ -14,7 +14,8 @@ func Convert2H265(in util.File, threads string) {
 	middle := "h265"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)
 	out := strings.Join([]string{prefix, middle, "/", in.FullName}, "")
-	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-threads", threads, out)
+	mp4 := strings.Join([]string{strings.Trim(out, in.ExtName), "mp4"}, ".")
+	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-threads", threads, mp4)
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout

@@ -14,7 +14,9 @@ func Convert2AV1(in util.File, threads string) {
 	middle := "av1"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)
 	out := strings.Join([]string{prefix, middle, "/", in.FullName}, "")
-	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-crf", "30", "-threads", threads, out)
+	mkv := strings.Join([]string{strings.Trim(out, in.ExtName), "mkv"}, ".")
+
+	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-crf", "30", "-threads", threads, mkv)
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
