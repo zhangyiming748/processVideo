@@ -24,13 +24,6 @@ func ProcessVideos(dir, pattern string) {
 	m_start := time.Now()
 	start := time.Now().Format("整个任务开始时间 15:04:03")
 	log.Debug.Println(start)
-	defer func() {
-		m_end := time.Now()
-		end := time.Now().Format("整个任务结束时间 15:04:03")
-		log.Debug.Println(end)
-		during := m_end.Sub(m_start).Minutes()
-		fmt.Printf("整个任务用时 %v 分\n", during)
-	}()
 
 	thread := runtime.NumCPU() / 2
 	threads := strconv.Itoa(thread)
@@ -51,4 +44,9 @@ func ProcessVideos(dir, pattern string) {
 			convert.Convert2H265(file, threads)
 		}
 	}
+	m_end := time.Now()
+	end := time.Now().Format("整个任务结束时间 15:04:03")
+	log.Debug.Println(end)
+	during := m_end.Sub(m_start).Minutes()
+	fmt.Printf("整个任务用时 %v 分\n", during)
 }
