@@ -12,3 +12,13 @@ func TestMaster(t *testing.T) {
 	ProcessVideos("/Users/zen/Github/processVideo/DB", "mp4")
 
 }
+func TestListFiles(t *testing.T) {
+	path := "/Users/zen/Github/processVideo"
+	listFolders(path)
+}
+
+func TestProcessAllVideos(t *testing.T) {
+	root := "/Users/zen/Github/processVideo"
+	pattern := "mp4"
+	ProcessAllVideos(root, pattern)
+}
