@@ -20,3 +20,13 @@ func TestGetFileInfo(t *testing.T) {
 	fmt.Printf("sys: %v\n", f.Sys())
 
 }
+
+func TestPreload(t *testing.T) {
+	f := &File{
+		FullPath: "/Users/zen/Github/processVideo/DB/004 - 【ヒマリとくま】一個サービスしとくよ.mp4",
+		Size:     0,
+		FullName: "004 - 【ヒマリとくま】一個サービスしとくよ.mp4",
+		ExtName:  ".mp4",
+	}
+	DetectFrame(*f)
+}
