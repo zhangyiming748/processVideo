@@ -1,4 +1,4 @@
-module github.com.zhangyiming748/processVideo
+module github.com/zhangyiming748/processVideo
 
 go 1.19
 
