@@ -16,7 +16,7 @@ const (
 	MB = 1048576
 )
 const (
-	SMALL  = 10 * MB
+	SMALL  = 20 * MB
 	MIDDLE = 20 * MB
 	BIG    = 30 * MB
 	HUGE   = 50 * MB
@@ -37,9 +37,11 @@ func ProcessVideos(dir, pattern string) {
 		if file.Size < SMALL {
 			convert.Convert2AV1(file, threads)
 		} else if file.Size < MIDDLE {
-			convert.Convert2VP9(file, threads)
+			// convert.Convert2VP9(file, threads)
+			convert.Convert2H265(file, threads)
 		} else if file.Size < BIG {
-			convert.Convert2VP8(file, threads)
+			// convert.Convert2VP8(file, threads)
+			convert.Convert2H265(file, threads)
 		} else if file.Size < HUGE {
 			convert.Convert2H265(file, threads)
 		} else {
