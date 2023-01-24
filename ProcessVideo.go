@@ -6,7 +6,6 @@ import (
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processVideo/convert"
 	"github.com/zhangyiming748/processVideo/util"
-	"math"
 	"os"
 	"strings"
 	"time"
@@ -31,10 +30,8 @@ func ProcessVideos(dir, pattern, threads string) {
 	files = util.GetFileInfo(util.GetMultiFiles(dir, pattern))
 	for _, file := range files {
 		//frame := util.DetectFrame(file)
-		var frame int = math.MaxInt
 		go getInfo.GetVideoFrame(file.FullPath)
-		log.Debug.Printf("文件帧数约%d\n", frame)
-		if frame < 500 {
+		if file.Size < SMALL {
 			convert.Convert2AV1(file, threads)
 		} else {
 			convert.Convert2H265(file, threads)
@@ -70,8 +67,8 @@ func ProcessAllVideos(root, pattern, threads string) {
 	for _, src := range folders {
 		files = util.GetFileInfo(util.GetMultiFiles(src, pattern))
 		for _, file := range files {
-			frame := util.DetectFrame(file)
-			log.Debug.Printf("文件帧数约%d\n", frame)
+			//frame := util.DetectFrame(file)
+			go getInfo.GetVideoFrame(file.FullPath)
 			if file.Size < SMALL {
 				convert.Convert2AV1(file, threads)
 			} else {
