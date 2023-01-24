@@ -34,7 +34,7 @@ func ProcessVideos(dir, pattern string) {
 	for _, file := range files {
 		frame := util.DetectFrame(file)
 		log.Debug.Printf("文件帧数约%d\n", frame)
-		if file.Size < SMALL {
+		if frame < 500 {
 			convert.Convert2AV1(file, threads)
 		} else {
 			convert.Convert2H265(file, threads)
