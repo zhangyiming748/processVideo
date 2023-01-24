@@ -6,6 +6,7 @@ import (
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processVideo/convert"
 	"github.com/zhangyiming748/processVideo/util"
+	"math"
 	"os"
 	"strings"
 	"time"
@@ -30,7 +31,7 @@ func ProcessVideos(dir, pattern, threads string) {
 	files = util.GetFileInfo(util.GetMultiFiles(dir, pattern))
 	for _, file := range files {
 		//frame := util.DetectFrame(file)
-		var frame int
+		var frame int = math.MaxInt
 		go getInfo.GetVideoFrame(file.FullPath)
 		log.Debug.Printf("文件帧数约%d\n", frame)
 		if frame < 500 {
@@ -63,7 +64,7 @@ func ProcessAllVideos(root, pattern, threads string) {
 	m_start := time.Now()
 	start := time.Now().Format("整个任务开始时间 15:04:03")
 	log.Debug.Println(start)
-	
+
 	var files []util.File
 	folders := listFolders(root)
 	for _, src := range folders {
