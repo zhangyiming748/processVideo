@@ -16,10 +16,10 @@ const (
 	MB = 1048576
 )
 const (
-	SMALL  = 20 * MB
+	SMALL  = 50 * MB
 	MIDDLE = 20 * MB
 	BIG    = 30 * MB
-	HUGE   = 50 * MB
+	HUGE   = 500 * MB
 )
 
 func ProcessVideos(dir, pattern string) {
@@ -36,17 +36,22 @@ func ProcessVideos(dir, pattern string) {
 		log.Debug.Printf("文件帧数约%d\n", frame)
 		if file.Size < SMALL {
 			convert.Convert2AV1(file, threads)
-		} else if file.Size < MIDDLE {
-			// convert.Convert2VP9(file, threads)
-			convert.Convert2H265(file, threads)
-		} else if file.Size < BIG {
-			// convert.Convert2VP8(file, threads)
-			convert.Convert2H265(file, threads)
-		} else if file.Size < HUGE {
-			convert.Convert2H265(file, threads)
 		} else {
 			convert.Convert2H265(file, threads)
 		}
+		//if file.Size < SMALL {
+		//	convert.Convert2AV1(file, threads)
+		//} else if file.Size < MIDDLE {
+		//	// convert.Convert2VP9(file, threads)
+		//	convert.Convert2H265(file, threads)
+		//} else if file.Size < BIG {
+		//	// convert.Convert2VP8(file, threads)
+		//	convert.Convert2H265(file, threads)
+		//} else if file.Size < HUGE {
+		//	convert.Convert2H265(file, threads)
+		//} else {
+		//	convert.Convert2H265(file, threads)
+		//}
 	}
 	m_end := time.Now()
 	end := time.Now().Format("整个任务结束时间 15:04:03")
@@ -71,15 +76,20 @@ func ProcessAllVideos(root, pattern string) {
 			log.Debug.Printf("文件帧数约%d\n", frame)
 			if file.Size < SMALL {
 				convert.Convert2AV1(file, threads)
-			} else if file.Size < MIDDLE {
-				convert.Convert2VP9(file, threads)
-			} else if file.Size < BIG {
-				convert.Convert2VP8(file, threads)
-			} else if file.Size < HUGE {
-				convert.Convert2H265(file, threads)
 			} else {
 				convert.Convert2H265(file, threads)
 			}
+			//if file.Size < SMALL {
+			//	convert.Convert2AV1(file, threads)
+			//} else if file.Size < MIDDLE {
+			//	convert.Convert2VP9(file, threads)
+			//} else if file.Size < BIG {
+			//	convert.Convert2VP8(file, threads)
+			//} else if file.Size < HUGE {
+			//	convert.Convert2H265(file, threads)
+			//} else {
+			//	convert.Convert2H265(file, threads)
+			//}
 		}
 	}
 
