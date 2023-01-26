@@ -16,7 +16,7 @@ const (
 	MB = 1048576
 )
 const (
-	SMALL  = 50 * MB
+	SMALL  = 5 * MB
 	MIDDLE = 20 * MB
 	BIG    = 30 * MB
 	HUGE   = 500 * MB
