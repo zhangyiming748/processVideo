@@ -2,12 +2,11 @@ package processVideo
 
 import (
 	"fmt"
+	"github.com/zhangyiming748/getInfo"
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processVideo/convert"
 	"github.com/zhangyiming748/processVideo/util"
 	"os"
-	"runtime"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -22,19 +21,17 @@ const (
 	HUGE   = 500 * MB
 )
 
-func ProcessVideos(dir, pattern string) {
+func ProcessVideos(dir, pattern, threads string) {
 	m_start := time.Now()
 	start := time.Now().Format("整个任务开始时间 15:04:03")
 	log.Debug.Println(start)
 
-	thread := runtime.NumCPU() / 2
-	threads := strconv.Itoa(thread)
 	var files []util.File
 	files = util.GetFileInfo(util.GetMultiFiles(dir, pattern))
 	for _, file := range files {
-		frame := util.DetectFrame(file)
-		log.Debug.Printf("文件帧数约%d\n", frame)
-		if frame < 500 {
+		//frame := util.DetectFrame(file)
+		go getInfo.GetVideoFrame(file.FullPath)
+		if file.Size < SMALL {
 			convert.Convert2AV1(file, threads)
 		} else {
 			convert.Convert2H265(file, threads)
@@ -60,20 +57,18 @@ func ProcessVideos(dir, pattern string) {
 	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
 
-func ProcessAllVideos(root, pattern string) {
+func ProcessAllVideos(root, pattern, threads string) {
 	m_start := time.Now()
 	start := time.Now().Format("整个任务开始时间 15:04:03")
 	log.Debug.Println(start)
 
-	thread := runtime.NumCPU() / 2
-	threads := strconv.Itoa(thread)
 	var files []util.File
 	folders := listFolders(root)
 	for _, src := range folders {
 		files = util.GetFileInfo(util.GetMultiFiles(src, pattern))
 		for _, file := range files {
-			frame := util.DetectFrame(file)
-			log.Debug.Printf("文件帧数约%d\n", frame)
+			//frame := util.DetectFrame(file)
+			go getInfo.GetVideoFrame(file.FullPath)
 			if file.Size < SMALL {
 				convert.Convert2AV1(file, threads)
 			} else {
