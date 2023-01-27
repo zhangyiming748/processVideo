@@ -6,6 +6,7 @@ import (
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processVideo/convert"
 	"github.com/zhangyiming748/processVideo/util"
+	"github.com/zhangyiming748/voiceAlert"
 	"os"
 	"strings"
 	"time"
@@ -22,6 +23,11 @@ const (
 )
 
 func ProcessVideos(dir, pattern, threads string) {
+	defer func() {
+		if err := recover(); err != nil {
+			voiceAlert.Voice(voiceAlert.FAILED)
+		}
+	}()
 	m_start := time.Now()
 	start := time.Now().Format("整个任务开始时间 15:04:03")
 	log.Debug.Println(start)
@@ -33,8 +39,10 @@ func ProcessVideos(dir, pattern, threads string) {
 		go getInfo.GetVideoFrame(file.FullPath)
 		if file.Size < SMALL {
 			convert.Convert2AV1(file, threads)
+			voiceAlert.Voice(voiceAlert.SUCCESS)
 		} else {
 			convert.Convert2H265(file, threads)
+			voiceAlert.Voice(voiceAlert.SUCCESS)
 		}
 		//if file.Size < SMALL {
 		//	convert.Convert2AV1(file, threads)
@@ -54,10 +62,16 @@ func ProcessVideos(dir, pattern, threads string) {
 	end := time.Now().Format("整个任务结束时间 15:04:03")
 	log.Debug.Println(end)
 	during := m_end.Sub(m_start).Minutes()
+	voiceAlert.Voice(voiceAlert.COMPLETE)
 	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
 
 func ProcessAllVideos(root, pattern, threads string) {
+	defer func() {
+		if err := recover(); err != nil {
+			voiceAlert.Voice(voiceAlert.FAILED)
+		}
+	}()
 	m_start := time.Now()
 	start := time.Now().Format("整个任务开始时间 15:04:03")
 	log.Debug.Println(start)
@@ -71,8 +85,10 @@ func ProcessAllVideos(root, pattern, threads string) {
 			go getInfo.GetVideoFrame(file.FullPath)
 			if file.Size < SMALL {
 				convert.Convert2AV1(file, threads)
+				voiceAlert.Voice(voiceAlert.SUCCESS)
 			} else {
 				convert.Convert2H265(file, threads)
+				voiceAlert.Voice(voiceAlert.SUCCESS)
 			}
 			//if file.Size < SMALL {
 			//	convert.Convert2AV1(file, threads)
@@ -92,6 +108,7 @@ func ProcessAllVideos(root, pattern, threads string) {
 	end := time.Now().Format("整个任务结束时间 15:04:03")
 	log.Debug.Println(end)
 	during := m_end.Sub(m_start).Minutes()
+	voiceAlert.Voice(voiceAlert.COMPLETE)
 	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
 
