@@ -9,8 +9,7 @@ func TestMaster(t *testing.T) {
 	//t.Logf("%+v\n", ret1)
 	//ret2 := util.GetFileInfo(ret1)
 	//t.Logf("%+v\n", ret2)
-	ProcessVideos("/Users/zen/Github/processVideo/DB", "mp4")
-
+	ProcessVideos("/Users/zen/Downloads/Telegram Desktop/Nier/2B", "mp4;avi;wmv", "2")
 }
 func TestListFiles(t *testing.T) {
 	path := "/Users/zen/Github/processVideo"
@@ -18,7 +17,5 @@ func TestListFiles(t *testing.T) {
 }
 
 func TestProcessAllVideos(t *testing.T) {
-	root := "/Users/zen/Github/processVideo"
-	pattern := "mp4"
-	ProcessAllVideos(root, pattern)
+	ProcessAllVideos("/Users/zen/Downloads/Telegram Desktop/Nier", "mp4", "2")
 }
