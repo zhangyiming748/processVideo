@@ -37,26 +37,8 @@ func ProcessVideos(dir, pattern, threads string) {
 	for _, file := range files {
 		//frame := util.DetectFrame(file)
 		go getInfo.GetVideoFrame(file.FullPath)
-		if file.Size < SMALL {
-			convert.Convert2AV1(file, threads)
-			voiceAlert.Voice(voiceAlert.SUCCESS)
-		} else {
-			convert.Convert2H265(file, threads)
-			voiceAlert.Voice(voiceAlert.SUCCESS)
-		}
-		//if file.Size < SMALL {
-		//	convert.Convert2AV1(file, threads)
-		//} else if file.Size < MIDDLE {
-		//	// convert.Convert2VP9(file, threads)
-		//	convert.Convert2H265(file, threads)
-		//} else if file.Size < BIG {
-		//	// convert.Convert2VP8(file, threads)
-		//	convert.Convert2H265(file, threads)
-		//} else if file.Size < HUGE {
-		//	convert.Convert2H265(file, threads)
-		//} else {
-		//	convert.Convert2H265(file, threads)
-		//}
+		convert.Convert2H265(file, threads)
+		voiceAlert.Voice(voiceAlert.SUCCESS)
 	}
 	m_end := time.Now()
 	end := time.Now().Format("整个任务结束时间 15:04:03")
