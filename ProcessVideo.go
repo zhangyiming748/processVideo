@@ -2,6 +2,7 @@ package processVideo
 
 import (
 	"fmt"
+	"github.com/zhangyiming748/GetAllFolder"
 	"github.com/zhangyiming748/getInfo"
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processVideo/convert"
@@ -59,7 +60,7 @@ func ProcessAllVideos(root, pattern, threads string) {
 	log.Debug.Println(start)
 
 	var files []util.File
-	folders := listFolders(root)
+	folders := GetAllFolder.ListFolders(root)
 	for _, src := range folders {
 		files = util.GetFileInfo(util.GetMultiFiles(src, pattern))
 		for _, file := range files {
