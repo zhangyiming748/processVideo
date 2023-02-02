@@ -1,7 +1,5 @@
-github.com/zhangyiming748/GetAllFolder v0.0.1 h1:YprPb0Gjs3br2hPihvwd5tIxuv7Y2B2j9EwVED1LHtM=
-github.com/zhangyiming748/GetAllFolder v0.0.1/go.mod h1:moC0JZv3ysz/ZJfBK7jSVd0fXSZyrkuz5InFlyOeCJ4=
-github.com/zhangyiming748/getInfo v0.0.3 h1:l+acHw3gzulRS+oQpI+NZ3CZnF9ZjtLgI4f/eMEnIO4=
-github.com/zhangyiming748/getInfo v0.0.3/go.mod h1:tYQITf2hn6nYAucVM8WlRYIvNMmvxYgf1IV1ZRgkKUQ=
+github.com/zhangyiming748/GetAllFolder v0.0.2 h1:eck7nj2MDBzU7c1npvLJ7nzCORXnn3WmZcz31C1HWto=
+github.com/zhangyiming748/GetAllFolder v0.0.2/go.mod h1:moC0JZv3ysz/ZJfBK7jSVd0fXSZyrkuz5InFlyOeCJ4=
 github.com/zhangyiming748/getInfo v0.0.4 h1:DckFZS4+re2HjDOdPF+bYlg/VLt/qQBpINCRnwqNKkY=
 github.com/zhangyiming748/getInfo v0.0.4/go.mod h1:tYQITf2hn6nYAucVM8WlRYIvNMmvxYgf1IV1ZRgkKUQ=
 github.com/zhangyiming748/log v0.0.3 h1:SL2zmxLElyuT4AyVegxm2hEPT1ZAw6V0J5kRIUjKEss=
