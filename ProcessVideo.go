@@ -3,6 +3,7 @@ package processVideo
 import (
 	"fmt"
 	"github.com/zhangyiming748/GetAllFolder"
+	"github.com/zhangyiming748/GetFileInfo"
 	"github.com/zhangyiming748/getInfo"
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processVideo/convert"
@@ -37,6 +38,10 @@ func ProcessVideos(dir, pattern, threads string) {
 	files = util.GetFileInfo(util.GetMultiFiles(dir, pattern))
 	for _, file := range files {
 		//frame := util.DetectFrame(file)
+		info := GetFileInfo.GetVideoFileInfo(file.FullPath)
+		if info.Code == "HEVC" {
+			continue
+		}
 		go getInfo.GetVideoFrame(file.FullPath)
 		convert.Convert2H265(file, threads)
 		voiceAlert.Voice(voiceAlert.SUCCESS)

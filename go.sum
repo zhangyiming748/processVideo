@@ -1,5 +1,7 @@
 github.com/zhangyiming748/GetAllFolder v0.0.2 h1:eck7nj2MDBzU7c1npvLJ7nzCORXnn3WmZcz31C1HWto=
 github.com/zhangyiming748/GetAllFolder v0.0.2/go.mod h1:moC0JZv3ysz/ZJfBK7jSVd0fXSZyrkuz5InFlyOeCJ4=
+github.com/zhangyiming748/GetFileInfo v0.0.2 h1:M0CdO3I+v9Bk6YeVdex+OQQXzmp47jbrTJAj2AvNeTw=
+github.com/zhangyiming748/GetFileInfo v0.0.2/go.mod h1:FHAHhkZ6Y8qMUIziCg5DgZH/rZ8U9k+199IoVjhC9ug=
 github.com/zhangyiming748/getInfo v0.0.4 h1:DckFZS4+re2HjDOdPF+bYlg/VLt/qQBpINCRnwqNKkY=
 github.com/zhangyiming748/getInfo v0.0.4/go.mod h1:tYQITf2hn6nYAucVM8WlRYIvNMmvxYgf1IV1ZRgkKUQ=
 github.com/zhangyiming748/log v0.0.3 h1:SL2zmxLElyuT4AyVegxm2hEPT1ZAw6V0J5kRIUjKEss=
