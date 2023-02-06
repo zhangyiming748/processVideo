@@ -1,16 +1,16 @@
 package convert
 
 import (
+	"github.com/zhangyiming748/GetFileInfo"
 	u "github.com/zhangyiming748/getInfo/util"
 	"github.com/zhangyiming748/log"
-	"github.com/zhangyiming748/processVideo/util"
 	"github.com/zhangyiming748/replace"
 	"os"
 	"os/exec"
 	"strings"
 )
 
-func Convert2H265(in util.File, threads string) {
+func Convert2H265(in GetFileInfo.Info, threads string) {
 	prefix := strings.Trim(in.FullPath, in.FullName)
 	middle := "h265"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)

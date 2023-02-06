@@ -11,10 +11,6 @@ func TestMaster(t *testing.T) {
 	//t.Logf("%+v\n", ret2)
 	ProcessVideos("/Users/zen/Downloads/Telegram Desktop/Nier/2B", "mp4;avi;wmv", "2")
 }
-func TestListFiles(t *testing.T) {
-	path := "/Users/zen/Github/processVideo"
-	listFolders(path)
-}
 
 func TestProcessAllVideos(t *testing.T) {
 	ProcessAllVideos("/Users/zen/Downloads/Telegram Desktop/Nier", "mp4", "2")
