@@ -11,10 +11,18 @@ import (
 )
 
 func Convert2H265(in GetFileInfo.Info, threads string) {
+
 	prefix := strings.Trim(in.FullPath, in.FullName)
 	middle := "h265"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)
 	out := strings.Join([]string{prefix, middle, "/", in.FullName}, "")
+
+	defer func() {
+		if err := recover(); err != nil {
+			log.Warn.Printf("出现错误的输入文件\"%v\"\n输出文件\"%v\"\n", in.FullPath, out)
+		}
+	}()
+
 	mp4 := strings.Join([]string{strings.Trim(out, in.ExtName), "mp4"}, ".")
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-threads", threads, mp4)
 	if u.BiggerThenFHD(in.FullPath) {

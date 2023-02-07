@@ -2,40 +2,11 @@ package convert
 
 import (
 	"github.com/zhangyiming748/log"
-	"github.com/zhangyiming748/processVideo/util"
 	"github.com/zhangyiming748/replace"
 	"os/exec"
 	"testing"
 )
 
-func TestConvH265(t *testing.T) {
-	var f util.File
-	f.FullPath = "/Users/zen/Github/processVideo/DB/Scarlet_doggy.mp4"
-	f.FullName = "Scarlet_doggy.mp4"
-	f.ExtName = ".mp4"
-	Convert2H265(f, "2")
-}
-func TestConvVP9(t *testing.T) {
-	var f util.File
-	f.FullPath = "/Users/zen/Github/processVideo/DB/Scarlet_doggy.mp4"
-	f.FullName = "Scarlet_doggy.mp4"
-	f.ExtName = ".mp4"
-	Convert2VP9(f, "2")
-}
-func TestConvVP8(t *testing.T) {
-	var f util.File
-	f.FullPath = "/Users/zen/Github/processVideo/DB/Scarlet_doggy.mp4"
-	f.FullName = "Scarlet_doggy.mp4"
-	f.ExtName = ".mp4"
-	Convert2VP8(f, "2")
-}
-func TestConvAV1(t *testing.T) {
-	var f util.File
-	f.FullPath = "/Users/zen/Github/processVideo/DB/Scarlet_doggy.mp4"
-	f.FullName = "Scarlet_doggy.mp4"
-	f.ExtName = ".mp4"
-	Convert2AV1(f, "2")
-}
 func TestCircle(t *testing.T) {
 	cmd := exec.Command("/opt/homebrew/bin/bash", "-c", "echo foo && echo bar")
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
