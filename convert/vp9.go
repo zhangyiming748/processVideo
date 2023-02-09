@@ -1,8 +1,8 @@
 package convert
 
 import (
+	"github.com/zhangyiming748/GetFileInfo"
 	"github.com/zhangyiming748/log"
-	"github.com/zhangyiming748/processVideo/util"
 	"github.com/zhangyiming748/replace"
 	"os"
 	"os/exec"
@@ -10,7 +10,7 @@ import (
 )
 
 // todo ffmpeg -i input.mp4 -c:v libvpx-vp9 -b:v 2M -pass 1 -an -f null /dev/null && ffmpeg -i input.mp4 -c:v libvpx-vp9 -b:v 2M -pass 2 -c:a libopus output.webm
-func Convert2VP9(in util.File, threads string) {
+func Convert2VP9(in GetFileInfo.Info, threads string) {
 	prefix := strings.Trim(in.FullPath, in.FullName)
 	middle := "vp9"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)

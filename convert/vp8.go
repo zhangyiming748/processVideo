@@ -1,15 +1,15 @@
 package convert
 
 import (
+	"github.com/zhangyiming748/GetFileInfo"
 	"github.com/zhangyiming748/log"
-	"github.com/zhangyiming748/processVideo/util"
 	"github.com/zhangyiming748/replace"
 	"os"
 	"os/exec"
 	"strings"
 )
 
-func Convert2VP8(in util.File, threads string) {
+func Convert2VP8(in GetFileInfo.Info, threads string) {
 	prefix := strings.Trim(in.FullPath, in.FullName)
 	middle := "vp8"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)

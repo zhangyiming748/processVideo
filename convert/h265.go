@@ -2,7 +2,6 @@ package convert
 
 import (
 	"github.com/zhangyiming748/GetFileInfo"
-	u "github.com/zhangyiming748/getInfo/util"
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/replace"
 	"os"
@@ -11,7 +10,10 @@ import (
 )
 
 func Convert2H265(in GetFileInfo.Info, threads string) {
-
+	info := GetFileInfo.GetVideoFileInfo(in.FullPath)
+	if info.Code == "HEVC" {
+		return
+	}
 	prefix := strings.Trim(in.FullPath, in.FullName)
 	middle := "h265"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)
@@ -22,12 +24,12 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 			log.Warn.Printf("出现错误的输入文件\"%v\"\n输出文件\"%v\"\n", in.FullPath, out)
 		}
 	}()
-
 	mp4 := strings.Join([]string{strings.Trim(out, in.ExtName), "mp4"}, ".")
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-threads", threads, mp4)
-	if u.BiggerThenFHD(in.FullPath) {
-		// 	//ffmpeg -i 1.mp4 -strict -2 -vf scale=-1:1080 4.mp4
+	// info := GetFileInfo.GetVideoFileInfo(in.FullPath)
+	if info.Width > 1920 || info.Height > 1920 {
 		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-strict", "2", "-vf", "scale=-1:1080", "-threads", threads, mp4)
+
 	}
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
 	stdout, err := cmd.StdoutPipe()

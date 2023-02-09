@@ -3,7 +3,6 @@ package processVideo
 import (
 	"github.com/zhangyiming748/GetAllFolder"
 	"github.com/zhangyiming748/GetFileInfo"
-	"github.com/zhangyiming748/getInfo"
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processVideo/convert"
 	"github.com/zhangyiming748/voiceAlert"
@@ -20,10 +19,10 @@ const (
 	HUGE   = 500 * MB
 )
 
-func ProcessVideos(dir, pattern, threads string) {
+func ProcessVideos(dir, pattern, threads string, focus bool) {
 	defer func() {
 		if err := recover(); err != nil {
-			voiceAlert.Voice(voiceAlert.FAILED)
+			voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "文件转换失败")
 		}
 	}()
 	m_start := time.Now()
@@ -36,26 +35,25 @@ func ProcessVideos(dir, pattern, threads string) {
 	}
 	for _, file := range files {
 		//frame := util.DetectFrame(file)
-		info := GetFileInfo.GetVideoFileInfo(file.FullPath)
-		if info.Code == "HEVC" {
-			continue
+
+		if focus {
+			go GetFileInfo.CountFrame(&file)
 		}
-		go getInfo.GetVideoFrame(file.FullPath)
 		convert.Convert2H265(file, threads)
-		voiceAlert.Voice(voiceAlert.SUCCESS)
+		voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个文件转换完成")
 	}
 	m_end := time.Now()
 	end := time.Now().Format("整个任务结束时间 15:04:03")
 	log.Debug.Println(end)
 	during := m_end.Sub(m_start).Minutes()
-	voiceAlert.Voice(voiceAlert.COMPLETE)
+	voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个目录下文件全部转换完成")
 	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
 
-func ProcessAllVideos(root, pattern, threads string) {
-	ProcessVideos(root, pattern, threads)
+func ProcessAllVideos(root, pattern, threads string, focus bool) {
+	ProcessVideos(root, pattern, threads, focus)
 	folders := GetAllFolder.ListFolders(root)
 	for _, folder := range folders {
-		ProcessVideos(folder, pattern, threads)
+		ProcessVideos(folder, pattern, threads, focus)
 	}
 }
