@@ -33,9 +33,9 @@ func ProcessVideos(dir, pattern, threads string, focus bool) {
 	for i, file := range files {
 		log.Debug.Printf("符合条件的第%d个文件:%+v\n", i+1, file)
 	}
-	for _, file := range files {
+	for i, file := range files {
 		//frame := util.DetectFrame(file)
-
+		log.Debug.Printf("正在处理第 %d/%d 个视频\n", i+1, len(files))
 		if focus {
 			go GetFileInfo.CountFrame(&file)
 		}
