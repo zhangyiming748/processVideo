@@ -9,6 +9,6 @@ require (
 )
 
 require (
-	github.com/zhangyiming748/GetAllFolder v0.0.2
+	github.com/zhangyiming748/GetAllFolder v0.0.5
 	github.com/zhangyiming748/GetFileInfo v0.0.7
 )
