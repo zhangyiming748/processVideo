@@ -10,5 +10,5 @@ require (
 
 require (
 	github.com/zhangyiming748/GetAllFolder v0.0.2
-	github.com/zhangyiming748/GetFileInfo v0.0.6
+	github.com/zhangyiming748/GetFileInfo v0.0.7
 )
