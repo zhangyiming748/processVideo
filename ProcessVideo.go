@@ -19,7 +19,7 @@ const (
 	HUGE   = 500 * MB
 )
 
-func ProcessVideos(dir, pattern, threads string, focus bool) {
+func ProcessVideos(dir, pattern, threads string, focus, fast bool) {
 	defer func() {
 		if err := recover(); err != nil {
 			voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "文件转换失败")
@@ -39,7 +39,7 @@ func ProcessVideos(dir, pattern, threads string, focus bool) {
 		if focus {
 			go GetFileInfo.CountFrame(&file)
 		}
-		convert.Convert2H265(file, threads)
+		convert.Convert2H265(file, threads, fast)
 		go voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个文件转换完成")
 	}
 	m_end := time.Now()
@@ -50,10 +50,10 @@ func ProcessVideos(dir, pattern, threads string, focus bool) {
 	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
 
-func ProcessAllVideos(root, pattern, threads string, focus bool) {
-	ProcessVideos(root, pattern, threads, focus)
+func ProcessAllVideos(root, pattern, threads string, focus, fast bool) {
+	ProcessVideos(root, pattern, threads, focus, fast)
 	folders := GetAllFolder.ListFolders(root)
 	for _, folder := range folders {
-		ProcessVideos(folder, pattern, threads, focus)
+		ProcessVideos(folder, pattern, threads, focus, fast)
 	}
 }

@@ -5,7 +5,7 @@ import (
 )
 
 func TestMaster(t *testing.T) {
-	ProcessAllVideos("/Users/zen/Downloads/整理", "mp4;avi;wmv", "10", false)
+	ProcessAllVideos("/Users/zen/Downloads/Telegram/telegram/波多野结衣", "mp4;avi;wmv", "10", false, true)
 }
 
 func TestProcessAllVideos(t *testing.T) {

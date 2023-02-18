@@ -6,10 +6,11 @@ import (
 	"github.com/zhangyiming748/replace"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 )
 
-func Convert2H265(in GetFileInfo.Info, threads string) {
+func Convert2H265(in GetFileInfo.Info, threads string, fast bool) {
 	info := GetFileInfo.GetVideoFileInfo(in.FullPath)
 	if info.Code == "HEVC" {
 		return
@@ -26,10 +27,15 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 	}()
 	mp4 := strings.Join([]string{strings.Trim(out, in.ExtName), "mp4"}, ".")
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-threads", threads, mp4)
+	if runtime.GOOS == "darwin" || fast {
+		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "hevc_videotoolbox", "-pix_fmt", "yuv420p10le", "-threads", threads, mp4)
+	}
 	// info := GetFileInfo.GetVideoFileInfo(in.FullPath)
 	if info.Width > 1920 || info.Height > 1920 {
 		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-strict", "2", "-vf", "scale=-1:1080", "-threads", threads, mp4)
-
+		if runtime.GOOS == "darwin" || fast {
+			cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "hevc_videotoolbox", "-pix_fmt", "yuv420p10le", "-strict", "2", "-vf", "scale=-1:1080", "-threads", threads, mp4)
+		}
 	}
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
 	stdout, err := cmd.StdoutPipe()
