@@ -40,7 +40,7 @@ func ProcessVideos(dir, pattern, threads string, focus, fast bool) {
 			go GetFileInfo.CountFrame(&file)
 		}
 		convert.Convert2H265(file, threads, fast)
-		go voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个文件转换完成")
+		voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个文件转换完成")
 	}
 	m_end := time.Now()
 	end := time.Now().Format("整个任务结束时间 15:04:03")

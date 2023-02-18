@@ -27,13 +27,13 @@ func Convert2H265(in GetFileInfo.Info, threads string, fast bool) {
 	}()
 	mp4 := strings.Join([]string{strings.Trim(out, in.ExtName), "mp4"}, ".")
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-threads", threads, mp4)
-	if runtime.GOOS == "darwin" || fast {
+	if runtime.GOOS == "darwin" && fast {
 		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "hevc_videotoolbox", "-pix_fmt", "yuv420p10le", "-threads", threads, mp4)
 	}
 	// info := GetFileInfo.GetVideoFileInfo(in.FullPath)
-	if info.Width > 1920 || info.Height > 1920 {
+	if info.Width > 1920 && info.Height > 1920 {
 		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-strict", "2", "-vf", "scale=-1:1080", "-threads", threads, mp4)
-		if runtime.GOOS == "darwin" || fast {
+		if runtime.GOOS == "darwin" && fast {
 			cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "hevc_videotoolbox", "-pix_fmt", "yuv420p10le", "-strict", "2", "-vf", "scale=-1:1080", "-threads", threads, mp4)
 		}
 	}
