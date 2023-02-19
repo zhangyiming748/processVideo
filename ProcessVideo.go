@@ -6,6 +6,9 @@ import (
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processVideo/convert"
 	"github.com/zhangyiming748/voiceAlert"
+	"os"
+	"path"
+	"strings"
 	"time"
 )
 
@@ -19,6 +22,23 @@ const (
 	HUGE   = 500 * MB
 )
 
+/*
+转换一个手动输入路径的视频为h265
+*/
+func ProcessVideo(fullpath, threads string) {
+	defer func() {
+		if err := recover(); err != nil {
+			voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "文件转换失败")
+		}
+	}()
+	dst := strings.Join([]string{path.Dir(fullpath), "h265"}, string(os.PathSeparator))
+	os.Mkdir(dst, 0777)
+	filename := path.Base(fullpath)
+	target := strings.Join([]string{dst, filename}, string(os.PathSeparator))
+	log.Debug.Printf("src = %v\t dst = %v\n", fullpath, target)
+	convert.ConvertOnce(fullpath, target, threads)
+
+}
 func ProcessVideos(dir, pattern, threads string, focus, fast bool) {
 	defer func() {
 		if err := recover(); err != nil {
