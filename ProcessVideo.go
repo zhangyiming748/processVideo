@@ -46,7 +46,7 @@ func ProcessVideos(dir, pattern, threads string, focus, fast bool) {
 	end := time.Now().Format("整个任务结束时间 15:04:03")
 	log.Debug.Println(end)
 	during := m_end.Sub(m_start).Minutes()
-	go voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个目录下文件全部转换完成")
+	voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个目录下文件全部转换完成")
 	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
 
