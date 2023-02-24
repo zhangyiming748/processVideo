@@ -34,3 +34,6 @@ func TestOnces(t *testing.T) {
 		ProcessVideo(fp, threads)
 	}
 }
+func TestProcessVideos(t *testing.T) {
+	ProcessVideos("/Users/zen/Downloads/整理/live", "mp4", "10", false, false)
+}

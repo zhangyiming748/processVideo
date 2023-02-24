@@ -13,6 +13,7 @@ import (
 func Convert2H265(in GetFileInfo.Info, threads string, fast bool) {
 	info := GetFileInfo.GetVideoFileInfo(in.FullPath)
 	if info.Code == "HEVC" {
+		log.Debug.Printf("跳过hevc文件:%v\n", in.FullPath)
 		return
 	}
 	prefix := strings.Trim(in.FullPath, in.FullName)
