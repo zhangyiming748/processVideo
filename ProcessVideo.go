@@ -9,7 +9,6 @@ import (
 	"os"
 	"path"
 	"strings"
-	"time"
 )
 
 const (
@@ -28,7 +27,7 @@ const (
 func ProcessVideo(fullpath, threads string) {
 	defer func() {
 		if err := recover(); err != nil {
-			voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "文件转换失败")
+			voiceAlert.Customize("failed", voiceAlert.Samantha)
 		}
 	}()
 	dst := strings.Join([]string{path.Dir(fullpath), "h265"}, string(os.PathSeparator))
@@ -36,38 +35,27 @@ func ProcessVideo(fullpath, threads string) {
 	filename := path.Base(fullpath)
 	target := strings.Join([]string{dst, filename}, string(os.PathSeparator))
 	log.Debug.Printf("src = %v\t dst = %v\n", fullpath, target)
-	convert.ConvertOnce(fullpath, target, threads)
-
+	convert.ConvertOne(fullpath, target, threads)
 }
 func ProcessVideos(dir, pattern, threads string, focus, fast bool) {
 	defer func() {
 		if err := recover(); err != nil {
-			voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "文件转换失败")
+			voiceAlert.Customize("failed", voiceAlert.Samantha)
 		}
 	}()
-	m_start := time.Now()
-	start := time.Now().Format("整个任务开始时间 15:04:03")
-	log.Debug.Println(start)
-
 	files := GetFileInfo.GetAllFileInfo(dir, pattern)
 	for i, file := range files {
 		log.Debug.Printf("符合条件的第%d个文件:%+v\n", i+1, file)
 	}
 	for i, file := range files {
-		//frame := util.DetectFrame(file)
 		log.Debug.Printf("正在处理第 %d/%d 个视频\n", i+1, len(files))
 		if focus {
 			go GetFileInfo.CountFrame(&file)
 		}
 		convert.Convert2H265(file, threads, fast)
-		voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个文件转换完成")
+		voiceAlert.Customize("done", voiceAlert.Samantha)
 	}
-	m_end := time.Now()
-	end := time.Now().Format("整个任务结束时间 15:04:03")
-	log.Debug.Println(end)
-	during := m_end.Sub(m_start).Minutes()
-	voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个目录下文件全部转换完成")
-	log.Debug.Printf("整个任务用时 %v 分\n", during)
+	voiceAlert.Customize("complete", voiceAlert.Samantha)
 }
 
 func ProcessAllVideos(root, pattern, threads string, focus, fast bool) {

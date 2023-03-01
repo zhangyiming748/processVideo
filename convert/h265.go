@@ -69,7 +69,7 @@ func Convert2H265(in GetFileInfo.Info, threads string, fast bool) {
 		log.Debug.Printf("删除源文件:%v\n", in.FullName)
 	}
 }
-func ConvertOnce(src, dst, threads string) {
+func ConvertOne(src, dst, threads string) {
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", src, "-c:v", "libx265", "-threads", threads, dst)
 	log.Debug.Printf("生成的命令是%v\n", cmd)
 	stdout, err := cmd.StdoutPipe()
