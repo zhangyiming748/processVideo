@@ -6,7 +6,7 @@ import (
 )
 
 func TestMaster(t *testing.T) {
-	ProcessAllVideos("/Users/zen/Downloads/Telegram Desktop/水岛津实", "mp4;avi;wmv", "10", false, false)
+	ProcessAllVideos("/Users/zen/Movies/2B", "mp4;avi;wmv", "10", false)
 }
 
 func TestProcessAllVideos(t *testing.T) {
@@ -33,7 +33,4 @@ func TestOnces(t *testing.T) {
 	for _, fp := range fps {
 		ProcessVideo(fp, threads)
 	}
-}
-func TestProcessVideos(t *testing.T) {
-	ProcessVideos("/Users/zen/Downloads/整理/live", "mp4", "10", false, false)
 }

@@ -37,7 +37,7 @@ func ProcessVideo(fullpath, threads string) {
 	log.Debug.Printf("src = %v\t dst = %v\n", fullpath, target)
 	convert.ConvertOne(fullpath, target, threads)
 }
-func ProcessVideos(dir, pattern, threads string, focus, fast bool) {
+func ProcessVideos(dir, pattern, threads string, focus bool) {
 	defer func() {
 		if err := recover(); err != nil {
 			voiceAlert.Customize("failed", voiceAlert.Samantha)
@@ -52,16 +52,16 @@ func ProcessVideos(dir, pattern, threads string, focus, fast bool) {
 		if focus {
 			go GetFileInfo.CountFrame(&file)
 		}
-		convert.Convert2H265(file, threads, fast)
+		convert.Convert2H265(file, threads)
 		voiceAlert.Customize("done", voiceAlert.Samantha)
 	}
 	voiceAlert.Customize("complete", voiceAlert.Samantha)
 }
 
-func ProcessAllVideos(root, pattern, threads string, focus, fast bool) {
-	ProcessVideos(root, pattern, threads, focus, fast)
+func ProcessAllVideos(root, pattern, threads string, focus bool) {
+	ProcessVideos(root, pattern, threads, focus)
 	folders := GetAllFolder.ListFolders(root)
 	for _, folder := range folders {
-		ProcessVideos(folder, pattern, threads, focus, fast)
+		ProcessVideos(folder, pattern, threads, focus)
 	}
 }
