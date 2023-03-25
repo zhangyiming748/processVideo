@@ -6,7 +6,7 @@ import (
 )
 
 func TestMaster(t *testing.T) {
-	ProcessAllVideos("/Users/zen/Downloads/梅麻呂大师：恶作剧女孩 2K新步兵中文版", "mp4;avi;wmv", "10", false)
+	ProcessAllVideos("/Users/zen/Downloads/NecDaz/ff/tifa/resize", "mp4;avi;wmv", "10", false)
 }
 
 func TestProcessAllVideos(t *testing.T) {

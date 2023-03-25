@@ -126,17 +126,17 @@ func CutHead(src, pattern, startAt string) {
 	}
 }
 func doCut(in, out, startAt string) {
-	slog.Info("输入文件", in, "输出文件", out)
+	slog.Info("准备剪切", slog.Any("输入文件", in), slog.Any("输出文件", out))
 	cmd := exec.Command("ffmpeg", "-ss", startAt, "-i", in, out)
 	slog.Debug("生成命令", slog.Any("命令", cmd))
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
-		slog.Warn("cmd.StdoutPipe产生的错误", err)
+		slog.Warn("cmd.StdoutPipe", slog.Any("错误", err))
 		return
 	}
 	if err = cmd.Start(); err != nil {
-		slog.Warn("cmd.Run产生的错误", err)
+		slog.Warn("cmd.Run", slog.Any("产生的错误", err))
 		return
 	}
 	for {
@@ -144,13 +144,13 @@ func doCut(in, out, startAt string) {
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
 		t = replace.Replace(t)
-		slog.Debug("ffmpeg", t)
+		fmt.Println(t)
 		if err != nil {
 			break
 		}
 	}
 	if err = cmd.Wait(); err != nil {
-		slog.Warn("命令执行中有错误产生", err)
+		slog.Warn("命令执行中有错误产生", slog.Any("错误", err))
 		return
 	}
 }

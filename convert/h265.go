@@ -20,13 +20,15 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 	prefix := strings.Trim(in.FullPath, in.FullName)
 	middle := "h265"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)
-	out := strings.Join([]string{prefix, middle, "/", in.FullName}, "")
+	out := strings.Join([]string{prefix, middle, in.FullName}, "")
 	defer func() {
 		if err := recover(); err != nil {
 			slog.Warn("出现错误", slog.Any("输入文件", in.FullPath), slog.Any("输出文件", out))
 		}
 	}()
-	mp4 := strings.Join([]string{strings.Trim(out, in.ExtName), "mp4"}, ".")
+	mp4 := strings.Join([]string{strings.Trim(out, in.ExtName), "mp4"}, "")
+	slog.Debug("调试", slog.Any("输入文件", in.FullPath), slog.Any("输出文件", out))
+
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-threads", threads, "-tag:v", "hvc1", mp4)
 	if runtime.GOOS == "darwin" {
 		slog.Debug("匹配到苹果设备,使用硬件加速", "https://developer.apple.com/documentation/videotoolbox")
