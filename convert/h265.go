@@ -23,7 +23,7 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 	out := strings.Join([]string{prefix, middle, "/", in.FullName}, "")
 	defer func() {
 		if err := recover(); err != nil {
-			slog.Warn(fmt.Sprintf("出现错误的输入文件\"%v\"\n输出文件\"%v\"\n", in.FullPath, out))
+			slog.Warn("出现错误", slog.Any("输入文件", in.FullPath), slog.Any("输出文件", out))
 		}
 	}()
 	mp4 := strings.Join([]string{strings.Trim(out, in.ExtName), "mp4"}, ".")
@@ -53,7 +53,7 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
 		t = replace.Replace(t)
-		slog.Debug("ffmpeg", t)
+		fmt.Println(t)
 		if err != nil {
 			break
 		}
@@ -75,11 +75,11 @@ func ConvertOne(src, dst, threads string) {
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
-		slog.Warn("cmd.StdoutPipe产生错误", err)
+		slog.Warn("cmd.StdoutPipe", slog.Any("产生错误", err))
 		return
 	}
 	if err = cmd.Start(); err != nil {
-		slog.Warn("cmd.Run产生的错误", err)
+		slog.Warn("cmd.Run", slog.Any("产生错误", err))
 		return
 	}
 	for {
@@ -87,19 +87,19 @@ func ConvertOne(src, dst, threads string) {
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
 		t = replace.Replace(t)
-		slog.Debug("ffmpeg运行时的输出", t)
+		fmt.Println(t)
 		if err != nil {
 			break
 		}
 	}
 	if err = cmd.Wait(); err != nil {
-		slog.Warn("命令执行中有错误产生", err)
+		slog.Warn("命令执行出错",slog.Any("错误", err))
 		return
 	}
 	//log.Debug.Printf("完成当前文件的处理:源文件是%s\t目标文件是%s\n", in, file)
 	if err := os.RemoveAll(src); err != nil {
-		slog.Warn("删除源文件失败", err)
+		slog.Warn("删除失败", slog.Any("源文件",err))
 	} else {
-		slog.Info("删除源文件", src)
+		slog.Info("删除成功", slog.Any("源文件",src))
 	}
 }
