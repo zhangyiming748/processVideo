@@ -1,9 +1,10 @@
 package convert
 
 import (
+	"fmt"
 	"github.com/zhangyiming748/GetFileInfo"
-	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/replace"
+	"golang.org/x/exp/slog"
 	"os"
 	"os/exec"
 	"runtime"
@@ -13,94 +14,92 @@ import (
 func Convert2H265(in GetFileInfo.Info, threads string) {
 	info := GetFileInfo.GetVideoFileInfo(in.FullPath)
 	if info.Code == "HEVC" {
-		log.Debug.Printf("跳过hevc文件:%v\n", in.FullPath)
+		slog.Info(fmt.Sprintf("跳过hevc文件:%v\n", in.FullPath))
 		return
 	}
 	prefix := strings.Trim(in.FullPath, in.FullName)
 	middle := "h265"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)
 	out := strings.Join([]string{prefix, middle, "/", in.FullName}, "")
-
 	defer func() {
 		if err := recover(); err != nil {
-			log.Warn.Printf("出现错误的输入文件\"%v\"\n输出文件\"%v\"\n", in.FullPath, out)
+			slog.Warn(fmt.Sprintf("出现错误的输入文件\"%v\"\n输出文件\"%v\"\n", in.FullPath, out))
 		}
 	}()
 	mp4 := strings.Join([]string{strings.Trim(out, in.ExtName), "mp4"}, ".")
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-threads", threads, "-tag:v", "hvc1", mp4)
 	if runtime.GOOS == "darwin" {
-		// https://developer.apple.com/documentation/videotoolbox
+		slog.Debug("匹配到苹果设备,使用硬件加速", "https://developer.apple.com/documentation/videotoolbox")
 		cmd = exec.Command("ffmpeg", "-threads", threads, "-hwaccel", "videotoolbox", "-i", in.FullPath, "-c:v", "libx265", "-threads", threads, "-tag:v", "hvc1", mp4)
 	}
 	// info := GetFileInfo.GetVideoFileInfo(in.FullPath)
 	if info.Width > 1920 && info.Height > 1920 {
-		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libx265", "-strict", "2", "-vf", "scale=-1:1080", "-threads", threads, "-tag:v", "hvc1", mp4)
-		if runtime.GOOS == "darwin" {
-			// https://developer.apple.com/documentation/videotoolbox
-			cmd = exec.Command("ffmpeg", "-threads", threads, "-hwaccel", "videotoolbox", "-i", in.FullPath, "-c:v", "libx265", "-strict", "2", "-vf", "scale=-1:1080", "-threads", threads, "-tag:v", "hvc1", mp4)
-		}
+		slog.Debug("视频大于1080P需要使用其他程序先处理视频尺寸", in)
+		return
 	}
-	log.Debug.Printf("生成的命令是:%s\n", cmd)
+	slog.Debug("生成的命令", cmd)
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
-		log.Warn.Panicf("cmd.StdoutPipe产生的错误:%v\n", err)
+		slog.Warn("cmd.StdoutPipe产生错误", err)
+		return
 	}
 	if err = cmd.Start(); err != nil {
-		log.Warn.Panicf("cmd.Run产生的错误:%v\n", err)
+		slog.Warn("cmd.Run产生的错误", err)
+		return
 	}
 	for {
 		tmp := make([]byte, 1024)
 		_, err := stdout.Read(tmp)
-		//写成输出日志
-		//log.Info.Printf("正在处理第 %d/%d 个文件: %s\n", index+1, total, file)
 		t := string(tmp)
 		t = replace.Replace(t)
-		log.TTY.Printf("%v\b", t)
+		slog.Debug("ffmpeg", t)
 		if err != nil {
 			break
 		}
 	}
 	if err = cmd.Wait(); err != nil {
-		log.Warn.Panicf("命令执行中有错误产生:%v\n", err)
+		slog.Warn("命令执行中有错误产生", err)
+		return
 	}
 	//log.Debug.Printf("完成当前文件的处理:源文件是%s\t目标文件是%s\n", in, file)
 	if err := os.RemoveAll(in.FullPath); err != nil {
-		log.Warn.Printf("删除源文件失败:%v\n", err)
+		slog.Warn("删除源文件失败", err)
 	} else {
-		log.Debug.Printf("删除源文件:%v\n", in.FullName)
+		slog.Info("删除源文件", in.FullName)
 	}
 }
 func ConvertOne(src, dst, threads string) {
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", src, "-c:v", "libx265", "-threads", threads, dst)
-	log.Debug.Printf("生成的命令是%v\n", cmd)
+	slog.Debug("生成的命令", cmd)
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
-		log.Warn.Panicf("cmd.StdoutPipe产生的错误:%v\n", err)
+		slog.Warn("cmd.StdoutPipe产生错误", err)
+		return
 	}
 	if err = cmd.Start(); err != nil {
-		log.Warn.Panicf("cmd.Run产生的错误:%v\n", err)
+		slog.Warn("cmd.Run产生的错误", err)
+		return
 	}
 	for {
 		tmp := make([]byte, 1024)
 		_, err := stdout.Read(tmp)
-		//写成输出日志
-		//log.Info.Printf("正在处理第 %d/%d 个文件: %s\n", index+1, total, file)
 		t := string(tmp)
 		t = replace.Replace(t)
-		log.TTY.Printf("%v\b", t)
+		slog.Debug("ffmpeg运行时的输出", t)
 		if err != nil {
 			break
 		}
 	}
 	if err = cmd.Wait(); err != nil {
-		log.Warn.Panicf("命令执行中有错误产生:%v\n", err)
+		slog.Warn("命令执行中有错误产生", err)
+		return
 	}
 	//log.Debug.Printf("完成当前文件的处理:源文件是%s\t目标文件是%s\n", in, file)
 	if err := os.RemoveAll(src); err != nil {
-		log.Warn.Printf("删除源文件失败:%v\n", err)
+		slog.Warn("删除源文件失败", err)
 	} else {
-		log.Debug.Printf("删除源文件:%v\n", src)
+		slog.Info("删除源文件", src)
 	}
 }

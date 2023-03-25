@@ -34,3 +34,12 @@ func TestOnces(t *testing.T) {
 		ProcessVideo(fp, threads)
 	}
 }
+func TestCutHead(t *testing.T) {
+	src := "/Users/zen/Downloads/head"
+	pattern := "mp4"
+	CutHead(src, pattern, "00:00:06.500")
+}
+
+func TestGetENV(t *testing.T) {
+	ProcessVideos("/Users/zen/Downloads/Telegram Desktop/shemale/solo", "mp4;mov", "4", false)
+}
