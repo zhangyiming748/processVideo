@@ -37,7 +37,7 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 		slog.Debug("视频大于1080P需要使用其他程序先处理视频尺寸", in)
 		return
 	}
-	slog.Debug("生成的命令", slog.Any("command", cmd))
+	slog.Debug("生成的命令", slog.Any("command", fmt.Sprint(cmd)))
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
@@ -64,14 +64,14 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 	}
 	//log.Debug.Printf("完成当前文件的处理:源文件是%s\t目标文件是%s\n", in, file)
 	if err := os.RemoveAll(in.FullPath); err != nil {
-		slog.Warn("删除源文件失败", err)
+		slog.Warn("删除失败", slog.Any("源文件", in.FullPath), slog.Any("错误", err))
 	} else {
-		slog.Info("删除源文件", in.FullName)
+		slog.Info("删除成功", slog.Any("源文件", in.FullName))
 	}
 }
 func ConvertOne(src, dst, threads string) {
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", src, "-c:v", "libx265", "-threads", threads, dst)
-	slog.Debug("生成的命令", cmd)
+	slog.Debug("生成的命令", slog.Any("command", fmt.Sprint(cmd)))
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
@@ -93,13 +93,13 @@ func ConvertOne(src, dst, threads string) {
 		}
 	}
 	if err = cmd.Wait(); err != nil {
-		slog.Warn("命令执行出错",slog.Any("错误", err))
+		slog.Warn("命令执行出错", slog.Any("错误", err))
 		return
 	}
 	//log.Debug.Printf("完成当前文件的处理:源文件是%s\t目标文件是%s\n", in, file)
 	if err := os.RemoveAll(src); err != nil {
-		slog.Warn("删除失败", slog.Any("源文件",err))
+		slog.Warn("删除失败", slog.Any("源文件", err))
 	} else {
-		slog.Info("删除成功", slog.Any("源文件",src))
+		slog.Info("删除成功", slog.Any("源文件", src))
 	}
 }
