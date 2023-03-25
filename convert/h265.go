@@ -37,7 +37,7 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 		slog.Debug("视频大于1080P需要使用其他程序先处理视频尺寸", in)
 		return
 	}
-	slog.Debug("生成的命令", cmd)
+	slog.Debug("生成的命令", slog.Any("command", cmd))
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
