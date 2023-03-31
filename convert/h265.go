@@ -20,7 +20,7 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 	prefix := strings.Trim(in.FullPath, in.FullName)
 	middle := "h265"
 	os.MkdirAll(strings.Join([]string{prefix, middle}, ""), os.ModePerm)
-	out := strings.Join([]string{prefix, middle, in.FullName}, "")
+	out := strings.Join([]string{prefix, middle, string(os.PathSeparator), in.FullName}, "")
 	defer func() {
 		if err := recover(); err != nil {
 			slog.Warn("出现错误", slog.String("输入文件", in.FullPath), slog.String("输出文件", out))
