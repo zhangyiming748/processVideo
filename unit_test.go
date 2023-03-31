@@ -10,6 +10,7 @@ func TestMaster(t *testing.T) {
 }
 
 func TestProcessAllVideos(t *testing.T) {
+	ProcessVideos("/Users/zen/Downloads/bilibili", "mp4;avi;wmv", "10", false)
 
 }
 func TestDir(t *testing.T) {

@@ -39,18 +39,18 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 	}
 	// info := GetFileInfo.GetVideoFileInfo(in.FullPath)
 	if info.Width > 1920 && info.Height > 1920 {
-		slog.Debug("视频大于1080P需要使用其他程序先处理视频尺寸", in)
+		slog.Debug("视频大于1080P需要使用其他程序先处理视频尺寸", slog.String("文件名", in.FullPath))
 		return
 	}
 	slog.Debug("生成的命令", slog.Any("command", fmt.Sprint(cmd)))
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
-		slog.Warn("cmd.StdoutPipe产生错误", err)
+		slog.Warn("错误", slog.Any("cmd.StdoutPipe", err))
 		return
 	}
 	if err = cmd.Start(); err != nil {
-		slog.Warn("cmd.Run产生的错误", err)
+		slog.Warn("错误", slog.Any("cmd.Run", err))
 		return
 	}
 	for {
@@ -64,7 +64,7 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 		}
 	}
 	if err = cmd.Wait(); err != nil {
-		slog.Warn("命令执行中有错误产生", err)
+		slog.Warn("有错误产生", slog.Any("命令执行中", err))
 		return
 	}
 	//log.Debug.Printf("完成当前文件的处理:源文件是%s\t目标文件是%s\n", in, file)
