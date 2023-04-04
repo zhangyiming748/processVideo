@@ -55,15 +55,17 @@ func SetLog(level string) {
 	}
 	//defer logf.Close() //如果不关闭可能造成内存泄露
 	mylog = slog.New(opt.NewJSONHandler(io.MultiWriter(logf, os.Stdout)))
-
+}
+func init() {
+	l := os.Getenv("LEVEL")
+	SetLog(l)
 }
 
 /*
 转换一个手动输入路径的视频为h265
 */
 func ProcessVideo(fullpath, threads string) {
-	l := os.Getenv("LEVEL")
-	SetLog(l)
+
 	defer func() {
 		if err := recover(); err != nil {
 			voiceAlert.Customize("failed", voiceAlert.Samantha)
