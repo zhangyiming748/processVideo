@@ -9,6 +9,6 @@ require (
 
 require (
 	github.com/zhangyiming748/GetAllFolder v0.0.9
-	github.com/zhangyiming748/GetFileInfo v0.0.22
+	github.com/zhangyiming748/GetFileInfo v0.0.23
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 )
