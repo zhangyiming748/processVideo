@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"github.com/zhangyiming748/GetAllFolder"
 	"github.com/zhangyiming748/GetFileInfo"
-	"github.com/zhangyiming748/processVideo/convert"
 	"github.com/zhangyiming748/replace"
 	"github.com/zhangyiming748/voiceAlert"
 	"golang.org/x/exp/slog"
-	"io"
 	"os"
 	"os/exec"
 	"path"
@@ -25,50 +23,6 @@ const (
 	HUGE   = 500 * MB
 )
 
-func init() {
-	logLevel := os.Getenv("LEVEL")
-	//var level slog.Level
-	var opt slog.HandlerOptions
-	switch logLevel {
-	case "Debug":
-		opt = slog.HandlerOptions{ // 自定义option
-			AddSource: true,
-			Level:     slog.LevelDebug, // slog 默认日志级别是 info
-		}
-	case "Info":
-		opt = slog.HandlerOptions{ // 自定义option
-			AddSource: true,
-			Level:     slog.LevelInfo, // slog 默认日志级别是 info
-		}
-	case "Warn":
-		opt = slog.HandlerOptions{ // 自定义option
-			AddSource: true,
-			Level:     slog.LevelWarn, // slog 默认日志级别是 info
-		}
-	case "Err":
-		opt = slog.HandlerOptions{ // 自定义option
-			AddSource: true,
-			Level:     slog.LevelError, // slog 默认日志级别是 info
-		}
-	default:
-		slog.Warn("需要正确设置环境变量 Debug,Info,Warn or Err")
-		slog.Info("默认使用Debug等级")
-		opt = slog.HandlerOptions{ // 自定义option
-			AddSource: true,
-			Level:     slog.LevelDebug, // slog 默认日志级别是 info
-		}
-
-	}
-	file := "processVideo.log"
-	logf, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0777)
-	if err != nil {
-		panic(err)
-	}
-	//defer logf.Close() //如果不关闭可能造成内存泄露
-	logger := slog.New(opt.NewJSONHandler(io.MultiWriter(logf, os.Stdout)))
-	slog.SetDefault(logger)
-}
-
 /*
 转换一个手动输入路径的视频为h265
 */
@@ -82,7 +36,7 @@ func ProcessVideo(fullpath, threads string) {
 	os.Mkdir(dst, 0777)
 	filename := path.Base(fullpath)
 	target := strings.Join([]string{dst, filename}, string(os.PathSeparator))
-	convert.ConvertOne(fullpath, target, threads)
+	ConvertOne(fullpath, target, threads)
 }
 func ProcessVideos(dir, pattern, threads string, focus bool) {
 	defer func() {
@@ -97,7 +51,7 @@ func ProcessVideos(dir, pattern, threads string, focus bool) {
 			slog.Debug(fmt.Sprintln("异步获取视频帧数"))
 			go GetFileInfo.CountFrame(&file)
 		}
-		convert.Convert2H265(file, threads)
+		Convert2H265(file, threads)
 		voiceAlert.Customize("done", voiceAlert.Samantha)
 	}
 	voiceAlert.Customize("complete", voiceAlert.Samantha)

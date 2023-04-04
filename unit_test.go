@@ -6,7 +6,7 @@ import (
 )
 
 func TestMaster(t *testing.T) {
-	ProcessAllVideos("/Users/zen/Downloads/bilibili", "mp4;avi;wmv", "10", false)
+	ProcessAllVideos("C:\\Users\\zen\\Videos", "mp4;avi;wmv", "10", false)
 }
 
 func TestProcessAllVideos(t *testing.T) {
