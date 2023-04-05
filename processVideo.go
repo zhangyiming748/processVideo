@@ -53,7 +53,6 @@ func SetLog(level string) {
 	if err != nil {
 		panic(err)
 	}
-	//defer logf.Close() //如果不关闭可能造成内存泄露
 	mylog = slog.New(opt.NewJSONHandler(io.MultiWriter(logf, os.Stdout)))
 }
 func init() {
@@ -85,7 +84,7 @@ func ProcessVideos(dir, pattern, threads string, focus bool) {
 	}()
 	files := GetFileInfo.GetAllFileInfo(dir, pattern)
 	for i, file := range files {
-		mylog.Info(fmt.Sprintf("正在处理第 %d/%d 个视频\n", i+1, len(files)))
+		mylog.Info(fmt.Sprintf("正在处理第 %d/%d 个视频", i+1, len(files)))
 		if focus {
 			mylog.Debug(fmt.Sprintln("异步获取视频帧数"))
 			go GetFileInfo.CountFrame(&file)
