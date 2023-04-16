@@ -97,7 +97,7 @@ func ProcessVideos(dir, pattern, threads string, focus bool) {
 
 func ProcessAllVideos(root, pattern, threads string, focus bool) {
 	ProcessVideos(root, pattern, threads, focus)
-	folders := GetAllFolder.ListFolders(root)
+	folders := GetAllFolder.List(root)
 	for _, folder := range folders {
 		ProcessVideos(folder, pattern, threads, focus)
 	}

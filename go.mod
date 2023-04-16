@@ -8,7 +8,7 @@ require (
 )
 
 require (
-	github.com/zhangyiming748/GetAllFolder v0.0.12
-	github.com/zhangyiming748/GetFileInfo v0.0.24
+	github.com/zhangyiming748/GetAllFolder v0.0.14
+	github.com/zhangyiming748/GetFileInfo v0.0.31
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 )
