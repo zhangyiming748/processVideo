@@ -63,7 +63,7 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 		return
 	}
 	//log.Debug.Printf("完成当前文件的处理:源文件是%s\t目标文件是%s\n", in, file)
-	if err := os.RemoveAll(in.FullPath); err != nil {
+	if err = os.RemoveAll(in.FullPath); err != nil {
 		mylog.Warn("删除失败", slog.Any("源文件", in.FullPath), slog.Any("错误", err))
 	} else {
 		mylog.Info("删除成功", slog.Any("源文件", in.FullName))
