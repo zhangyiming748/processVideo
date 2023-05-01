@@ -13,7 +13,7 @@ import (
 func Convert2H265(in GetFileInfo.Info, threads string) {
 	info := GetFileInfo.GetVideoFileInfo(in.FullPath)
 	if info.Code == "HEVC" {
-		mylog.Info(fmt.Sprintf("跳过hevc文件:%v\n", in.FullPath))
+		mylog.Info(fmt.Sprintf("跳过hevc文件:%v", in.FullPath))
 		return
 	}
 	prefix := strings.Trim(in.FullPath, in.FullName)
@@ -70,7 +70,7 @@ func Convert2H265(in GetFileInfo.Info, threads string) {
 	}
 }
 func ConvertOne(src, dst, threads string) {
-	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", src, "-c:v", "libx265", "-threads", threads, dst)
+	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", src, "-c:v", "libx265", "-tag:v", "hvc1", "-threads", threads, dst)
 	mylog.Debug("生成的命令", slog.String("command", fmt.Sprint(cmd)))
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
