@@ -11,6 +11,10 @@ import (
 	"strings"
 )
 
+/*
+h265视频添加标签
+非h265视频生成报告
+*/
 func ProcessAllH265(root, pattern string) {
 	folders := GetAllFolder.List(root)
 	folders = append(folders, root)

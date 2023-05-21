@@ -45,8 +45,7 @@ func TestGetENV(t *testing.T) {
 	ProcessVideos("/Users/zen/Downloads/Telegram Desktop/shemale/solo", "mp4;mov", "4", false)
 }
 func TestProcessAllH265(t *testing.T) {
-	SetLog("Info")
-	root := "/Volumes/T7/slacking/Telegram"
-	pattern := "mp4;Mp4"
+	root := "/Users/zen/Downloads/4x3/Telegram"
+	pattern := "mp4"
 	ProcessAllH265(root, pattern)
 }
