@@ -6,11 +6,11 @@ import (
 )
 
 func TestMaster(t *testing.T) {
-	ProcessAllVideos("/Users/zen/Downloads/Telegram", "mp4;avi;wmv", "10", false)
+	ConvAllVideos2H265("/Users/zen/Downloads/Telegram", "mp4;avi;wmv", "10", false)
 }
 
 func TestProcessAllVideos(t *testing.T) {
-	ProcessVideos("/Users/zen/Downloads/bilibili", "mp4;avi;wmv", "10", false)
+	ConvVideos2H265("/Users/zen/Downloads/bilibili", "mp4;avi;wmv", "10", false)
 
 }
 func TestDir(t *testing.T) {
@@ -21,7 +21,7 @@ func TestDir(t *testing.T) {
 func TestOne(t *testing.T) {
 	fp := "/Volumes/T7/slacking/Telegram/DOA/Christie x Kasumi x Marie Rose/我的影片13.mp4"
 	threads := "10"
-	ProcessVideo(fp, threads)
+	ConvVideo2H265(fp, threads)
 }
 func TestOnces(t *testing.T) {
 	threads := "10"
@@ -32,7 +32,7 @@ func TestOnces(t *testing.T) {
 		"/Volumes/T7/slacking/Telegram/DOA/Momiji/MomijiPoVold.mov",
 	}
 	for _, fp := range fps {
-		ProcessVideo(fp, threads)
+		ConvVideo2H265(fp, threads)
 	}
 }
 func TestCutHead(t *testing.T) {
@@ -42,7 +42,7 @@ func TestCutHead(t *testing.T) {
 }
 
 func TestGetENV(t *testing.T) {
-	ProcessVideos("/Users/zen/Downloads/Telegram Desktop/shemale/solo", "mp4;mov", "4", false)
+	ConvVideos2H265("/Users/zen/Downloads/Telegram Desktop/shemale/solo", "mp4;mov", "4", false)
 }
 func TestProcessAllH265(t *testing.T) {
 	root := "/Users/zen/Downloads/4x3/Telegram"

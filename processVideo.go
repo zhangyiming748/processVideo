@@ -16,7 +16,7 @@ import (
 /*
 转换一个手动输入路径的视频为h265
 */
-func ProcessVideo(fullpath, threads string) {
+func ConvVideo2H265(fullpath, threads string) {
 	defer func() {
 		if err := recover(); err != nil {
 			voiceAlert.Customize("failed", voiceAlert.Samantha)
@@ -28,7 +28,7 @@ func ProcessVideo(fullpath, threads string) {
 	target := strings.Join([]string{dst, filename}, string(os.PathSeparator))
 	ConvertOne(fullpath, target, threads)
 }
-func ProcessVideos(dir, pattern, threads string, focus bool) {
+func ConvVideos2H265(dir, pattern, threads string, focus bool) {
 	defer func() {
 		if err := recover(); err != nil {
 			voiceAlert.Customize("failed", voiceAlert.Samantha)
@@ -43,11 +43,11 @@ func ProcessVideos(dir, pattern, threads string, focus bool) {
 	voiceAlert.Customize("complete", voiceAlert.Samantha)
 }
 
-func ProcessAllVideos(root, pattern, threads string, focus bool) {
-	ProcessVideos(root, pattern, threads, focus)
+func ConvAllVideos2H265(root, pattern, threads string, focus bool) {
+	ConvVideos2H265(root, pattern, threads, focus)
 	folders := GetAllFolder.List(root)
 	for _, folder := range folders {
-		ProcessVideos(folder, pattern, threads, focus)
+		ConvVideos2H265(folder, pattern, threads, focus)
 	}
 }
 
