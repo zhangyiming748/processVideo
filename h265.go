@@ -84,7 +84,7 @@ func ConvertOne(src, dst, threads string) {
 	}
 	for {
 		tmp := make([]byte, 1024)
-		_, err := stdout.Read(tmp)
+		_, err = stdout.Read(tmp)
 		t := string(tmp)
 		fmt.Println(t)
 		if err != nil {
@@ -96,7 +96,7 @@ func ConvertOne(src, dst, threads string) {
 		return
 	}
 	//log.Debug.Printf("完成当前文件的处理:源文件是%s\t目标文件是%s\n", in, file)
-	if err := os.RemoveAll(src); err != nil {
+	if err = os.RemoveAll(src); err != nil {
 		slog.Warn("删除失败", slog.Any("源文件", src), slog.Any("产生错误", err))
 	} else {
 		slog.Info("删除成功", slog.Any("源文件", src))
