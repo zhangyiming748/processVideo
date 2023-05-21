@@ -28,7 +28,7 @@ func ConvVideo2H265(fullpath, threads string) {
 	target := strings.Join([]string{dst, filename}, string(os.PathSeparator))
 	ConvertOne(fullpath, target, threads)
 }
-func ConvVideos2H265(dir, pattern, threads string, focus bool) {
+func ConvVideos2H265(dir, pattern, threads string) {
 	defer func() {
 		if err := recover(); err != nil {
 			voiceAlert.Customize("failed", voiceAlert.Samantha)
@@ -43,11 +43,11 @@ func ConvVideos2H265(dir, pattern, threads string, focus bool) {
 	voiceAlert.Customize("complete", voiceAlert.Samantha)
 }
 
-func ConvAllVideos2H265(root, pattern, threads string, focus bool) {
-	ConvVideos2H265(root, pattern, threads, focus)
+func ConvAllVideos2H265(root, pattern, threads string) {
+	ConvVideos2H265(root, pattern, threads)
 	folders := GetAllFolder.List(root)
 	for _, folder := range folders {
-		ConvVideos2H265(folder, pattern, threads, focus)
+		ConvVideos2H265(folder, pattern, threads)
 	}
 }
 
