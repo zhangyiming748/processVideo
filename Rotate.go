@@ -43,7 +43,7 @@ func rotate(in GetFileInfo.Info, direction, threads string) {
 	//if info.Width > 1920 || info.Height > 1920 {
 	//	cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-strict", "2", "-vf", "scale=-1:1080", "-vf", transport, "-c:v", "libx265", "-threads", threads, export)
 	//}
-	cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-vf", transport, "-threads", threads, export)
+	cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-vf", transport, "-c:v", "libx265", "-tag:v", "hvc1", "-threads", threads, export)
 	slog.Info("开始处理文件", slog.Any("生成的命令", fmt.Sprint(cmd)))
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
