@@ -58,11 +58,11 @@ func ResizeVideo(in GetFileInfo.Info, threads string, p string) {
 	var cmd *exec.Cmd
 	switch p {
 	case "1920x1080":
-		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-strict", "-2", "-vf", "scale=-1:1080", "-threads", threads, out)
+		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-strict", "-2", "-vf", "scale=-1:1080", "-c:v", "libx265", "-tag:v", "hvc1", "-threads", threads, out)
 	case "1080x1920":
-		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-strict", "-2", "-vf", "scale=-1:1920", "-threads", threads, out)
+		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-strict", "-2", "-vf", "scale=-1:1920", "-c:v", "libx265", "-tag:v", "hvc1", "-threads", threads, out)
 	case "1920x1920":
-		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-strict", "-2", "-vf", "scale=1920:1920", "-threads", threads, out)
+		cmd = exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-strict", "-2", "-vf", "scale=1920:1920", "-c:v", "libx265", "-tag:v", "hvc1", "-threads", threads, out)
 	default:
 		slog.Warn("不正常的视频源", slog.Any("视频信息", in.FullPath))
 	}
